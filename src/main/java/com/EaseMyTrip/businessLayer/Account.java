@@ -90,13 +90,44 @@ public class Account extends TestBase {
 		try {
 			homePage.otpTextInput().clear();
 			homePage.otpTextInput().sendKeys(otp);
-			//wait.until(ExpectedConditions.visibilityOf(homePage.passwordInputField()));
+			// wait.until(ExpectedConditions.visibilityOf(homePage.passwordInputField()));
 			if (homePage.passwordInputField().isDisplayed()) {
 				homePage.passwordInputField().clear();
 				homePage.passwordInputField().sendKeys(password);
 				homePage.confirmPasswordInputField().clear();
 				homePage.confirmPasswordInputField().sendKeys(password);
-				homePage.submitButton().click();
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean clickSubmit() {
+		try {
+			homePage.submitButton().click();
+			wait.until(ExpectedConditions.visibilityOf(homePage.loginUserNameText()));
+			if (homePage.loginUserNameText().isDisplayed()) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean login(String email, String password) {
+		try {
+			homePage.loginUserNameText().sendKeys(email);
+			homePage.loginPasswordText().sendKeys(password);
+			homePage.loginButton().click();
+			wait.until(ExpectedConditions.visibilityOf(homePage.accountNameDisplayText()));
+			if (homePage.accountNameDisplayText().getText().equalsIgnoreCase(email)) {
 				return true;
 			}
 			return false;
@@ -110,7 +141,7 @@ public class Account extends TestBase {
 	public boolean clickClose() {
 		try {
 			homePage.closeButton().click();
-			//wait.until(ExpectedConditions.visibilityOf(homePage.myAccountDropTray()));
+			// wait.until(ExpectedConditions.visibilityOf(homePage.myAccountDropTray()));
 			if (homePage.myAccountDropTray().isDisplayed()) {
 				return true;
 			}

@@ -1,12 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: TestSuite
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 116.938 s <<< FAILURE! - in TestSuite
-com.EaseMyTrip.test.AccountTest.createAccount[resultsautomationtest1@gmail.com, Amrita1959@](2)  Time elapsed: 15.423 s  <<< FAILURE!
-java.lang.AssertionError
-	at com.EaseMyTrip.test.AccountTest.createAccount(AccountTest.java:64)
-
-com.EaseMyTrip.test.AccountTest.createAccount[resultsautomationtest2@gmail.com, Amrita1959@](3)  Time elapsed: 13.123 s  <<< FAILURE!
-java.lang.AssertionError
-	at com.EaseMyTrip.test.AccountTest.createAccount(AccountTest.java:57)
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 88.211 s - in TestSuite

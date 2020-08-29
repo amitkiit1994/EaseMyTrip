@@ -75,10 +75,17 @@ public class AccountTest extends TestBase {
 				logger.error("Password could not be processed with: " + password);
 				assertTrue(false);
 			}
-			if (account.clickClose()) {
-				logger.info("Account Dialog box closed");
+			if (account.clickSubmit()) {
+				logger.info("Email Id and Password submitted successfully");
 			} else {
-				logger.error("Account dialog could not be closed with email: " + email);
+				logger.error("Account creation failed for email: " + email);
+				assertTrue(false);
+			}
+			if (account.login(email, password)) {
+				logger.info("Account Verified Successfully for email: "+email);
+			}
+			else {
+				logger.error("Account verification failed for email: " + email);
 				assertTrue(false);
 			}
 		} catch (Exception e) {

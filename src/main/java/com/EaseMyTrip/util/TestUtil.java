@@ -94,7 +94,7 @@ public class TestUtil extends TestBase {
 			}
 			inbox.close(false);
 			store.close();
-			System.out.println("List of OTPs retrived: "+listOfOtps);
+//			System.out.println("List of OTPs retrived: "+listOfOtps);
 			if(listOfOtps.size()>1) {
 			recentOtp=listOfOtps.get(listOfOtps.size()-1);
 			}
