@@ -1,6 +1,5 @@
 com\EaseMyTrip\pageObjects\HomePage.class
 com\EaseMyTrip\resources\RandomUserAgent.class
-com\EaseMyTrip\businessLayer\Account.class
 com\EaseMyTrip\util\TestUtil$1.class
 com\EaseMyTrip\util\TestUtil.class
 com\EaseMyTrip\resources\TestBase.class

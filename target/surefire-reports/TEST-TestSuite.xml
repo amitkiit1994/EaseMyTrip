@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestSuite" time="88.211" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestSuite" time="92.295" tests="1" errors="0" skipped="0" failures="1">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -18,7 +18,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-12.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\Amit Kumar Das\AppData\Local\Temp\surefire3969470811504864434\surefirebooter18377603216581681925.jar C:\Users\Amit Kumar Das\AppData\Local\Temp\surefire3969470811504864434 2020-08-29T23-58-02_434-jvmRun1 surefire9082784531789814551tmp surefire_05817020286763935076tmp"/>
+    <property name="sun.java.command" value="C:\Users\Amit Kumar Das\AppData\Local\Temp\surefire11452446805634736630\surefirebooter17084351913002963766.jar C:\Users\Amit Kumar Das\AppData\Local\Temp\surefire11452446805634736630 2020-08-30T12-56-42_634-jvmRun1 surefire10742368871222201023tmp surefire_010846369515825813641tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Amit Kumar Das\git\EaseMyTrip\target\test-classes;C:\Users\Amit Kumar Das\git\EaseMyTrip\target\classes;C:\Users\Amit Kumar Das\.m2\repository\org\jsoup\jsoup\1.13.1\jsoup-1.13.1.jar;C:\Users\Amit Kumar Das\.m2\repository\javax\mail\javax.mail-api\1.6.2\javax.mail-api-1.6.2.jar;C:\Users\Amit Kumar Das\.m2\repository\com\sun\mail\javax.mail\1.6.2\javax.mail-1.6.2.jar;C:\Users\Amit Kumar Das\.m2\repository\javax\activation\activation\1.1.1\activation-1.1.1.jar;C:\Users\Amit Kumar Das\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\Amit Kumar Das\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-java\3.141.59\selenium-java-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-api\3.141.59\selenium-api-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\3.141.59\selenium-edge-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\3.141.59\selenium-firefox-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\3.141.59\selenium-ie-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-opera-driver\3.141.59\selenium-opera-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\3.141.59\selenium-remote-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\3.141.59\selenium-safari-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-support\3.141.59\selenium-support-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\net\bytebuddy\byte-buddy\1.8.15\byte-buddy-1.8.15.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\commons\commons-exec\1.3\commons-exec-1.3.jar;C:\Users\Amit Kumar Das\.m2\repository\com\google\guava\guava\25.0-jre\guava-25.0-jre.jar;C:\Users\Amit Kumar Das\.m2\repository\com\google\code\findbugs\jsr305\1.3.9\jsr305-1.3.9.jar;C:\Users\Amit Kumar Das\.m2\repository\org\checkerframework\checker-compat-qual\2.0.0\checker-compat-qual-2.0.0.jar;C:\Users\Amit Kumar Das\.m2\repository\com\google\errorprone\error_prone_annotations\2.1.3\error_prone_annotations-2.1.3.jar;C:\Users\Amit Kumar Das\.m2\repository\com\google\j2objc\j2objc-annotations\1.1\j2objc-annotations-1.1.jar;C:\Users\Amit Kumar Das\.m2\repository\org\codehaus\mojo\animal-sniffer-annotations\1.14\animal-sniffer-annotations-1.14.jar;C:\Users\Amit Kumar Das\.m2\repository\com\squareup\okhttp3\okhttp\3.11.0\okhttp-3.11.0.jar;C:\Users\Amit Kumar Das\.m2\repository\com\squareup\okio\okio\1.14.0\okio-1.14.0.jar;C:\Users\Amit Kumar Das\.m2\repository\org\testng\testng\7.3.0\testng-7.3.0.jar;C:\Users\Amit Kumar Das\.m2\repository\com\beust\jcommander\1.78\jcommander-1.78.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\ant\ant\1.10.3\ant-1.10.3.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\ant\ant-launcher\1.10.3\ant-launcher-1.10.3.jar;C:\Users\Amit Kumar Das\.m2\repository\com\google\inject\guice\4.2.2\guice-4.2.2-no_aop.jar;C:\Users\Amit Kumar Das\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar;C:\Users\Amit Kumar Das\.m2\repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar;C:\Users\Amit Kumar Das\.m2\repository\org\yaml\snakeyaml\1.21\snakeyaml-1.21.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\logging\log4j\log4j-core\2.13.3\log4j-core-2.13.3.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\logging\log4j\log4j-api\2.13.3\log4j-api-2.13.3.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\3.141.59\selenium-chrome-driver-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\selenium-server\3.141.59\selenium-server-3.141.59.jar;C:\Users\Amit Kumar Das\.m2\repository\net\jcip\jcip-annotations\1.0\jcip-annotations-1.0.jar;C:\Users\Amit Kumar Das\.m2\repository\org\seleniumhq\selenium\jetty-repacked\9.4.12.v20180830\jetty-repacked-9.4.12.v20180830.jar;C:\Users\Amit Kumar Das\.m2\repository\javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\poi\poi\4.1.2\poi-4.1.2.jar;C:\Users\Amit Kumar Das\.m2\repository\commons-codec\commons-codec\1.13\commons-codec-1.13.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\commons\commons-math3\3.6.1\commons-math3-3.6.1.jar;C:\Users\Amit Kumar Das\.m2\repository\com\zaxxer\SparseBitSet\1.2\SparseBitSet-1.2.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\poi\poi-ooxml\4.1.2\poi-ooxml-4.1.2.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\poi\poi-ooxml-schemas\4.1.2\poi-ooxml-schemas-4.1.2.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\xmlbeans\xmlbeans\3.1.0\xmlbeans-3.1.0.jar;C:\Users\Amit Kumar Das\.m2\repository\org\apache\commons\commons-compress\1.19\commons-compress-1.19.jar;C:\Users\Amit Kumar Das\.m2\repository\com\github\virtuald\curvesapi\1.06\curvesapi-1.06.jar;C:\Users\Amit Kumar Das\.m2\repository\commons-io\commons-io\2.7\commons-io-2.7.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -34,7 +34,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\Amit Kumar Das\AppData\Local\Temp\surefire3969470811504864434\surefirebooter18377603216581681925.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Amit Kumar Das\AppData\Local\Temp\surefire11452446805634736630\surefirebooter17084351913002963766.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="12.0.2+10"/>
@@ -59,28 +59,31 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="56.0"/>
   </properties>
-  <testcase name="createAccount[resultsautomationtest@gmail.com, Amrita1959@](1)" classname="com.EaseMyTrip.test.AccountTest" time="72.236">
-    <system-out><![CDATA[User Agent: Mozilla/4.0 (compatible; MSIE 5.05; Windows NT 4.0)
-23:58:07.855 [main] INFO  com.EaseMyTrip.test.AccountTest - Driver is Initialized
-23:58:17.781 [main] INFO  com.EaseMyTrip.test.AccountTest - Website opened successfully
-23:58:20.306 [main] INFO  com.EaseMyTrip.test.AccountTest - Creating Account for Email id: resultsautomationtest@gmail.com
-23:58:20.420 [main] INFO  com.EaseMyTrip.test.AccountTest - Covid Alert Dialog Box closed
-23:58:21.093 [main] INFO  com.EaseMyTrip.test.AccountTest - My Account tray clicked successfully
-23:58:22.631 [main] INFO  com.EaseMyTrip.test.AccountTest - Email Entered with email id: resultsautomationtest@gmail.com
-List of OTPs retrived: [007245, 882505, 830221, 830899, 858128, 271109, 735495, 803594, 785532, 772551, 844381, 524483, 559307, 235468, 333460, 935322, 045499, 374478, 754543, 439022]
-23:59:26.483 [main] INFO  com.EaseMyTrip.test.AccountTest - OTP successfully retrieved from mail: 439022
-23:59:26.863 [main] INFO  com.EaseMyTrip.test.AccountTest - Password Entered with: Amrita1959@
-23:59:29.566 [main] INFO  com.EaseMyTrip.test.AccountTest - Email Id and Password submitted successfully
-23:59:30.544 [main] INFO  com.EaseMyTrip.test.AccountTest - Account Verified Successfully for email: resultsautomationtest@gmail.com
+  <testcase name="createAccount[resultsautomationtest@gmail.com, Amrita1959@](1)" classname="com.EaseMyTrip.test.AccountTest" time="76.125">
+    <failure type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError
+	at com.EaseMyTrip.test.AccountTest.createAccount(AccountTest.java:96)
+]]></failure>
+    <system-out><![CDATA[User Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/532.2 (KHTML, like Gecko) Chrome/4.0.222.12 Safari/532.2
+12:56:48.911 [main] INFO  com.EaseMyTrip.test.AccountTest - Driver is Initialized
+12:56:58.000 [main] INFO  com.EaseMyTrip.test.AccountTest - Website opened successfully
+12:57:00.815 [main] INFO  com.EaseMyTrip.test.AccountTest - Creating Account for Email id: resultsautomationtest@gmail.com
+12:57:00.899 [main] INFO  com.EaseMyTrip.test.AccountTest - Covid Alert Dialog Box closed
+12:57:01.593 [main] INFO  com.EaseMyTrip.test.AccountTest - My Account tray clicked successfully
+12:57:03.167 [main] INFO  com.EaseMyTrip.test.AccountTest - Email Entered with email id: resultsautomationtest@gmail.com
+12:58:09.684 [main] INFO  com.EaseMyTrip.test.AccountTest - OTP successfully retrieved from mail: 143437
+12:58:10.076 [main] INFO  com.EaseMyTrip.test.AccountTest - Password Entered with: Amrita1959@
+12:58:13.167 [main] INFO  com.EaseMyTrip.test.AccountTest - Email Id and Password submitted successfully
+12:58:14.229 [main] INFO  com.EaseMyTrip.test.AccountTest - Account Verified Successfully for email: resultsautomationtest@gmail.com
+12:58:14.933 [main] ERROR com.EaseMyTrip.test.AccountTest - Log out failed for resultsautomationtest@gmail.com
 ]]></system-out>
-    <system-err><![CDATA[Aug 29, 2020 11:58:04 PM org.openqa.selenium.remote.DesiredCapabilities chrome
+    <system-err><![CDATA[Aug 30, 2020 12:56:44 PM org.openqa.selenium.remote.DesiredCapabilities chrome
 INFO: Using `new ChromeOptions()` is preferred to `DesiredCapabilities.chrome()`
-Starting ChromeDriver 83.0.4103.39 (ccbf011cb2d2b19b506d844400483861342c20cd-refs/branch-heads/4103@{#416}) on port 44871
+Starting ChromeDriver 83.0.4103.39 (ccbf011cb2d2b19b506d844400483861342c20cd-refs/branch-heads/4103@{#416}) on port 23261
 Only local connections are allowed.
 Please see https://chromedriver.chromium.org/security-considerations for suggestions on keeping ChromeDriver safe.
 ChromeDriver was started successfully.
-[1598725685.754][WARNING]: This version of ChromeDriver has not been tested with Chrome version 84.
-Aug 29, 2020 11:58:07 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+[1598772406.757][WARNING]: This version of ChromeDriver has not been tested with Chrome version 84.
+Aug 30, 2020 12:56:48 PM org.openqa.selenium.remote.ProtocolHandshake createSession
 INFO: Detected dialect: W3C
 ]]></system-err>
   </testcase>

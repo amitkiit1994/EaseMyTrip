@@ -72,5 +72,65 @@ public class HomePage {
 	public WebElement accountNameDisplayText() {
 		return driver.findElement(By.xpath("//span[text()='Hi ']/following-sibling::span"));
 	}
-
+	public WebElement logoutButton() {
+		return driver.findElement(By.xpath("//a[@onClick='LogOut()']"));
+	}
+	public WebElement myProfileButton() {
+		return driver.findElement(By.xpath("//span[@id='spnLogoutPnl']/a[text()='My Profile']"));
+	}
+	public List<WebElement> tripTypeSwitch() {
+		return driver.findElements(By.xpath("//li[contains(@onclick,'setType')]"));
+	}
+	public WebElement fromLocationInputField() {
+		return driver.findElement(By.xpath("//input[@id='FromSector_show']"));
+	}
+	public List<WebElement> selectFromCity() {
+		return driver.findElements(By.xpath("//li[contains(@onclick,'FromSector')]"));
+	}
+	public WebElement toLocationInputField() {
+		return driver.findElement(By.xpath("//input[@placeholder='To' and @id='Editbox13_show']"));
+	}
+	public List<WebElement> selectToCity() {
+		return driver.findElements(By.xpath("//li[contains(@onclick,'Editbox')]"));
+	}
+	public WebElement departureDatePicker() {
+		return driver.findElement(By.xpath("//input[@id='ddate']"));
+	}
+	public List<WebElement> monthList(){
+		return driver.findElements(By.xpath("//div[contains(@class,'month') and contains(text(),'2020')]"));
+	}
+	public WebElement monthSelectRightArrow() {
+		return driver.findElement(By.xpath("//img[@alt='Arrow' and contains(@onclick,'nxt')]"));
+	}
+	public List<WebElement> dateList(){
+		return driver.findElements(By.xpath("//li[contains(@id,'/2020') and not(contains(@class,'old-dt'))]"));
+	}	
+	public WebElement numberOfTravelersSelect() {
+		return driver.findElement(By.xpath("//div[@class='dropdown_n']/a[@onclick='myFunction4()']/span[text()='1 Traveller(s)' and@class='drpNoTrv']"));
+	}
+	public WebElement numberOfTravelersDisplayText() {
+		return driver.findElement(By.xpath("(//input[@name='quantity'])[1]"));
+	}
+	public WebElement numberOfTravelersAdultSelect() {
+		return driver.findElement(By.xpath("(//input[@field='quantity' and @value='+'])[1]"));
+	}
+	public WebElement numberOfTravelersDoneButton() {
+		return driver.findElement(By.xpath("(//a[text()='Done'])[1]"));
+	}
+	public WebElement classSelect() {
+		return driver.findElement(By.xpath("//div[@class='dropdown_n']/a[@onclick='myFunction9()']/span[text()=' Economy' and@class='optclass-name']"));
+	}
+	public List<WebElement> classSelectfromList() {
+		return driver.findElements(By.xpath("//input[contains(@type,'radio') and not(contains(@onclick,'Mul')) and @name='optClass']/parent::label"));
+	}
+	public WebElement classSelectDoneButton() {
+		return driver.findElement(By.xpath("(//a[text()='Done'])[2]"));
+	}
+	public WebElement searchButton() {
+		return driver.findElement(By.xpath("(//input[@value='Search'])[1]"));
+	}
+	
+	
+	
+	
 }

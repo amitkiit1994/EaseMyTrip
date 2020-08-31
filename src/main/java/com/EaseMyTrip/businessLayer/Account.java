@@ -2,15 +2,12 @@ package com.EaseMyTrip.businessLayer;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.EaseMyTrip.pageObjects.AccountPage;
 import com.EaseMyTrip.pageObjects.HomePage;
 import com.EaseMyTrip.resources.TestBase;
 
 public class Account extends TestBase {
 
 	HomePage homePage = new HomePage(driver);
-	AccountPage accountPage = new AccountPage(driver);
 	String url = prop.getProperty("URL");
 	WebDriverWait wait = new WebDriverWait(driver, 60);
 
@@ -136,6 +133,25 @@ public class Account extends TestBase {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public boolean logout() {
+		try {
+			homePage.accountNameDisplayText().click();
+			wait.until(ExpectedConditions.visibilityOf(homePage.logoutButton()));
+			if(homePage.logoutButton().isDisplayed()) {
+				homePage.logoutButton().click();
+				driver.switchTo().alert().accept();
+				if(homePage.myAccountDropTray().isDisplayed()) {
+					return true;
+				}		
+			}
+			return false;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+	}
 	}
 
 	public boolean clickClose() {

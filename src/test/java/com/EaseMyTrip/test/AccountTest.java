@@ -88,6 +88,13 @@ public class AccountTest extends TestBase {
 				logger.error("Account verification failed for email: " + email);
 				assertTrue(false);
 			}
+			if(account.logout()) {
+				logger.info("Logged out successfully");
+			}
+			else {
+				logger.error("Log out failed for " + email);
+				assertTrue(false);
+			}
 		} catch (Exception e) {
 			assertTrue(false);
 			logger.error("Exception Occured while Creating Account for email: " + email);
@@ -100,11 +107,23 @@ public class AccountTest extends TestBase {
 	public static Object[][] readValueFromExcel() {
 		Object[][] data = null;
 		try {
-			data = TestUtil.readUsersFromExcel("Sheet1");
+			data = TestUtil.readUsersFromExcel("Sheet1",prop.getProperty("USER_LIST"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			logger.error("Exception occured in Data Provider");
+			logger.error("Exception occured in Data Provider for Users List");
+		}
+		return data;
+
+	}
+	
+	@DataProvider
+	public static Object[][] readFlightSearchInfoExcel() {
+		Object[][] data = null;
+		try {
+			data = TestUtil.readUsersFromExcel("Sheet1",prop.getProperty("FLIGHT_SEARCH_INFO"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error("Exception occured in Data Provider for Flight search info list");
 		}
 		return data;
 

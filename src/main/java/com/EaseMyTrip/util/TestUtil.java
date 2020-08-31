@@ -5,8 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 import javax.mail.BodyPart;
@@ -31,6 +36,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
+import org.openqa.selenium.WebElement;
 
 import com.EaseMyTrip.resources.TestBase;
 import com.sun.mail.imap.IMAPStore;
@@ -180,6 +186,67 @@ public class TestUtil extends TestBase {
 		}
 
 	}
+	
+	public static String convertMonthnumbertoName(int monthNumberInt) {
+		String monthNumber=String.valueOf(monthNumberInt);
+		if (monthNumber .equals("01")) {
+			return "January";
+		} else if (monthNumber.equals("02")) {
+			return "February";
+		} else if (monthNumber.equals("03")) {
+			return "March";
+		} else if (monthNumber.equals("04")) {
+			return "April";
+		} else if (monthNumber.equals("05")) {
+			return "May";
+		} else if (monthNumber.equals("06")) {
+			return "June";
+		} else if (monthNumber.equals("07")) {
+			return "July";
+		} else if (monthNumber.equals("08")) {
+			return "August";
+		} else if (monthNumber.equals("09")) {
+			return "September";
+		} else if (monthNumber.equals("10")) {
+			return "October";
+		} else if (monthNumber.equals("11")) {
+			return "November";
+		} else if (monthNumber.equals("12")) {
+			return "December";
+		}
+		return "Invalid Input";
+	}
+	
+	public static boolean selectFromListofElements(List<WebElement> listOfValues, String selection){
+		try {
+			for (WebElement value : listOfValues) {
+				if(value.getText().contains(selection)) {
+					value.click();
+					return true;
+				}
+			}
+			return false;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static void dateSelector(WebElement monthNavigation, List<WebElement> monthSelect, List<WebElement> dates, Date date) throws InterruptedException {
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		if (!monthSelect.get(1).getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+			while (!monthSelect.get(1).getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+				monthNavigation.click();
+			}
+		}
+		for (int i = 0; i < dates.size(); i++) {
+			if (dates.get(i).getAttribute("id").contains(localDate.format(DateTimeFormatter.ofPattern("dd-mm-yyyy")))) {
+				dates.get(i).click();
+				break;
+			}
+		}
+	}
 
 	public static ArrayList<String> getListOfUsers(String sheetName, String excelPath) throws IOException {
 		FileInputStream file = new FileInputStream(excelPath);
@@ -235,9 +302,9 @@ public class TestUtil extends TestBase {
 		return list;
 	}
 
-	public static Object[][] readUsersFromExcel(String SheetName) throws IOException {
+	public static Object[][] readUsersFromExcel(String filename,String SheetName) throws IOException {
 		String file_location = System.getProperty("user.dir")
-				+ "/src/main/java/com/EaseMyTrip/resources/Test Data/UserList.xlsx";
+				+ filename;
 		FileInputStream fileInputStream = new FileInputStream(file_location); // Excel sheet file location get mentioned
 																				// here
 		XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream); // get my workbook

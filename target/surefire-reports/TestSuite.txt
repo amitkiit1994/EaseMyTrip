@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: TestSuite
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 88.211 s - in TestSuite
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 92.295 s <<< FAILURE! - in TestSuite
+com.EaseMyTrip.test.AccountTest.createAccount[resultsautomationtest@gmail.com, Amrita1959@](1)  Time elapsed: 76.125 s  <<< FAILURE!
+java.lang.AssertionError
+	at com.EaseMyTrip.test.AccountTest.createAccount(AccountTest.java:96)
+
