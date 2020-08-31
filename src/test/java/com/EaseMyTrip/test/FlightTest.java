@@ -4,9 +4,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Locale;
+
+import javax.swing.text.DateFormatter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,15 +53,16 @@ public class FlightTest extends TestBase {
 
 	@Test(dataProvider = "readFlightSearchInfoExcel")
 	public void searchFlightTest(String tripType, String departureCity, String arrivalCity, Date departureDate,
-			Date arrivalDate, int numberOfTravellers, String flightClass) {
+			Date arrivalDate, String numberOfTravellers, String flightClass) throws ParseException {
+		SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy");
 		flight = new Flight();
 		try {
 			logger.info("-------------------Flight Search Details-----------------");
 			logger.info("Trip Type: " + tripType);
 			logger.info("Departure City: " + departureCity);
 			logger.info("Arrival City: " + arrivalCity);
-			logger.info("Departure Date: " + departureDate.toString());
-			logger.info("Arrival Date: " + arrivalDate.toString());
+			logger.info("Departure Date: " + format.format(departureDate));
+			logger.info("Arrival Date: " + format.format(arrivalDate));
 			logger.info("Number of Travellers: " + numberOfTravellers);
 			logger.info("Flight Class: " + flightClass);
 			logger.info("---------------------------------------------------------");
@@ -109,9 +114,9 @@ public class FlightTest extends TestBase {
 				logger.error("Departure date: "+df.format(departureDate)+" is less than current date: "+df.format(dateobj));
 				assertTrue(false);
 			}
-			
-			if (numberOfTravellers <= 0) {
-				if (flight.selectNumberOfAdults(numberOfTravellers)) {
+	
+			if (Integer.parseInt(numberOfTravellers) <= 0) {
+				if (flight.selectNumberOfAdults(Integer.parseInt(numberOfTravellers))) {
 					logger.info("Number of travellers selected");
 				} else {
 					logger.error("Number of travellers failed");
@@ -143,7 +148,7 @@ public class FlightTest extends TestBase {
 	public static Object[][] readFlightSearchInfoExcel() {
 		Object[][] data = null;
 		try {
-			data = TestUtil.readUsersFromExcel("Sheet1", prop.getProperty("FLIGHT_SEARCH_INFO"));
+			data = TestUtil.readUsersFromExcel(prop.getProperty("FLIGHT_SEARCH_INFO"),"Sheet1");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("Exception occured in Data Provider for Flight search info list");

@@ -303,8 +303,8 @@ public class TestUtil extends TestBase {
 	}
 
 	public static Object[][] readUsersFromExcel(String filename,String SheetName) throws IOException {
-		String file_location = System.getProperty("user.dir")
-				+ filename;
+		System.out.println("File path: "+filename);
+		String file_location = System.getProperty("user.dir") + filename;
 		FileInputStream fileInputStream = new FileInputStream(file_location); // Excel sheet file location get mentioned
 																				// here
 		XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream); // get my workbook
@@ -328,14 +328,28 @@ public class TestUtil extends TestBase {
 					XSSFCell cell = row.getCell(j);
 					if (cell == null)
 						Data[i][j] = ""; // if it get Null value it pass no data
-					else {
+					else if (cell.getCellType()==CellType.STRING) {
 						String value = cell.getStringCellValue();
 						Data[i][j] = value; // This formatter get my all values as string i.e integer, float all type
 											// data value
 					}
+					else if (cell.getCellType()==CellType.NUMERIC) {
+						if(DateUtil.isCellDateFormatted(cell)) {
+							Date value=cell.getDateCellValue();
+							Data[i][j] = value;
+						}
+						else{
+							double value = cell.getNumericCellValue();
+							Data[i][j] = String.valueOf(value);
+						}
+						// This formatter get my all values as string i.e integer, float all type
+											// data value
+					}
+					 // This formatter get my all values as string i.e integer, float all type
+											// data value
+					}
 				}
 			}
-		}
 		workbook.close();
 
 		return Data;

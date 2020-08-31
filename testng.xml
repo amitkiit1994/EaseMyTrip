@@ -3,7 +3,7 @@
 <suite name="Suite">
   <test name="LogIn">
     <classes>
-      <class name="com.EaseMyTrip.test.AccountTest"/>
+      <class name="com.EaseMyTrip.test.FlightTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

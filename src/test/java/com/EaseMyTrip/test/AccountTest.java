@@ -107,7 +107,7 @@ public class AccountTest extends TestBase {
 	public static Object[][] readValueFromExcel() {
 		Object[][] data = null;
 		try {
-			data = TestUtil.readUsersFromExcel("Sheet1",prop.getProperty("USER_LIST"));
+			data = TestUtil.readUsersFromExcel(prop.getProperty("USER_LIST"),"Sheet1");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("Exception occured in Data Provider for Users List");
@@ -116,18 +116,7 @@ public class AccountTest extends TestBase {
 
 	}
 	
-	@DataProvider
-	public static Object[][] readFlightSearchInfoExcel() {
-		Object[][] data = null;
-		try {
-			data = TestUtil.readUsersFromExcel("Sheet1",prop.getProperty("FLIGHT_SEARCH_INFO"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error("Exception occured in Data Provider for Flight search info list");
-		}
-		return data;
-
-	}
+	
 
 	@AfterTest
 	public void closeBrowser() {
