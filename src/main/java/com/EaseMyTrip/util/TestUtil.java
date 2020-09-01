@@ -36,6 +36,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 import com.EaseMyTrip.resources.TestBase;
@@ -189,30 +190,30 @@ public class TestUtil extends TestBase {
 	
 	public static String convertMonthnumbertoName(int monthNumberInt) {
 		String monthNumber=String.valueOf(monthNumberInt);
-		if (monthNumber .equals("01")) {
-			return "January";
-		} else if (monthNumber.equals("02")) {
-			return "February";
-		} else if (monthNumber.equals("03")) {
-			return "March";
-		} else if (monthNumber.equals("04")) {
-			return "April";
-		} else if (monthNumber.equals("05")) {
-			return "May";
-		} else if (monthNumber.equals("06")) {
-			return "June";
-		} else if (monthNumber.equals("07")) {
-			return "July";
-		} else if (monthNumber.equals("08")) {
-			return "August";
-		} else if (monthNumber.equals("09")) {
-			return "September";
+		if (monthNumber .equals("1")) {
+			return "JAN";
+		} else if (monthNumber.equals("2")) {
+			return "FEB";
+		} else if (monthNumber.equals("3")) {
+			return "MAR";
+		} else if (monthNumber.equals("4")) {
+			return "APR";
+		} else if (monthNumber.equals("5")) {
+			return "MAY";
+		} else if (monthNumber.equals("6")) {
+			return "JUN";
+		} else if (monthNumber.equals("7")) {
+			return "JUL";
+		} else if (monthNumber.equals("8")) {
+			return "AUG";
+		} else if (monthNumber.equals("9")) {
+			return "SEP";
 		} else if (monthNumber.equals("10")) {
-			return "October";
+			return "OCT";
 		} else if (monthNumber.equals("11")) {
-			return "November";
+			return "NOV";
 		} else if (monthNumber.equals("12")) {
-			return "December";
+			return "DEC";
 		}
 		return "Invalid Input";
 	}
@@ -233,15 +234,21 @@ public class TestUtil extends TestBase {
 		}
 	}
 	
-	public static void dateSelector(WebElement monthNavigation, List<WebElement> monthSelect, List<WebElement> dates, Date date) throws InterruptedException {
+	public static void dateSelector(WebElement monthNavigation, WebElement monthSelect, List<WebElement> dates, Date date) throws InterruptedException {
 		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		if (!monthSelect.get(1).getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
-			while (!monthSelect.get(1).getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+//		System.out.println("[DEBUG] Month Value: "+localDate.getMonthValue());
+//		System.out.println("[DEBUG] Month Name: "+convertMonthnumbertoName(localDate.getMonthValue()));
+//		System.out.println("[DEBUG] Month Name From UI: "+monthSelect.getText());
+		if (!monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+			while (!monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
 				monthNavigation.click();
 			}
 		}
+//		System.out.println("[DEBUG] Date From Excel: "+localDate.getDayOfMonth());
+		
 		for (int i = 0; i < dates.size(); i++) {
-			if (dates.get(i).getAttribute("id").contains(localDate.format(DateTimeFormatter.ofPattern("dd-mm-yyyy")))) {
+//			System.out.println("[DEBUG] Date From UI: "+dates.get(i).getText());
+			if (dates.get(i).getText().contains(String.valueOf(localDate.getDayOfMonth()))) {
 				dates.get(i).click();
 				break;
 			}

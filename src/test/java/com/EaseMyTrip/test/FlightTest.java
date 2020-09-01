@@ -99,7 +99,7 @@ public class FlightTest extends TestBase {
 				assertTrue(false);
 			}
 			
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			Date dateobj = new Date();
 			if(departureDate.after(dateobj)) {
 				if (departureDate != null) {
@@ -115,11 +115,11 @@ public class FlightTest extends TestBase {
 				assertTrue(false);
 			}
 	
-			if (Integer.parseInt(numberOfTravellers) <= 0) {
-				if (flight.selectNumberOfAdults(Integer.parseInt(numberOfTravellers))) {
+			if (Double.parseDouble(numberOfTravellers) > 0) {
+				if (flight.selectNumberOfAdults(numberOfTravellers)) {
 					logger.info("Number of travellers selected");
 				} else {
-					logger.error("Number of travellers failed");
+					logger.error("Number of travellers selection failed");
 					assertTrue(false);
 				}
 			} else {
@@ -138,9 +138,9 @@ public class FlightTest extends TestBase {
 				assertTrue(false);
 			}
 		} catch (Exception e) {
-			assertTrue(false);
 			logger.error("Exception Occured while Searching Flight");
 			e.printStackTrace();
+			assertTrue(false);
 		}
 	}
 

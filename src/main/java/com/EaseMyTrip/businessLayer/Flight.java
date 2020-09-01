@@ -2,6 +2,7 @@ package com.EaseMyTrip.businessLayer;
 
 import java.util.Date;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.EaseMyTrip.pageObjects.HomePage;
@@ -11,7 +12,7 @@ import com.EaseMyTrip.util.TestUtil;
 public class Flight extends TestBase {
 	HomePage homePage = new HomePage(driver);
 	String url = prop.getProperty("URL");
-	WebDriverWait wait = new WebDriverWait(driver, 60);
+	WebDriverWait wait = new WebDriverWait(driver, 10);
 
 	public boolean selectTripType(String tripType) {
 
@@ -30,8 +31,11 @@ public class Flight extends TestBase {
 	public boolean selectDepartureCity(String city) {
 		try {
 			if (homePage.fromLocationInputField().isDisplayed()) {
+				homePage.fromLocationInputField().clear();
+				homePage.fromLocationInputField().click();
 				homePage.fromLocationInputField().sendKeys(city);
-				if (TestUtil.selectFromListofElements(homePage.selectFromCity(), city)) {
+				wait.until(ExpectedConditions.visibilityOfAllElements(homePage.selectToCity()));
+				if (TestUtil.selectFromListofElements(homePage.selectToCity(), city)) {
 					return true;
 				}
 			}
@@ -46,7 +50,10 @@ public class Flight extends TestBase {
 	public boolean selectArrivalCity(String city) {
 		try {
 			if (homePage.toLocationInputField().isDisplayed()) {
+				homePage.toLocationInputField().clear();
+				homePage.toLocationInputField().click();
 				homePage.toLocationInputField().sendKeys(city);
+				wait.until(ExpectedConditions.visibilityOfAllElements(homePage.selectToCity()));
 				if (TestUtil.selectFromListofElements(homePage.selectToCity(), city)) {
 					return true;
 				}
@@ -75,12 +82,17 @@ public class Flight extends TestBase {
 		}
 	}
 
-	public boolean selectNumberOfAdults(int number) {
+	public boolean selectNumberOfAdults(String number) {
 		try {
+			
 			homePage.numberOfTravelersSelect().click();
-			while (!homePage.numberOfTravelersDisplayText().getAttribute("value")
-					.equalsIgnoreCase(String.valueOf(number))) {
-				homePage.numberOfTravelersAdultSelect().click();
+			Double actualValue=Double.parseDouble(homePage.numberOfTravelersDisplayText().getAttribute("value"));
+//			System.out.println("[DEBUG] Number of Travellers from Excel: " + number);
+//			System.out.println("[DEBUG] Number of Travellers from UI: "+actualValue);
+			if (actualValue!=Double.parseDouble(number)) {
+				while (actualValue!=Double.parseDouble(number)) {
+					homePage.numberOfTravelersAdultSelect().click();
+				}
 			}
 			if (homePage.numberOfTravelersDoneButton().isDisplayed()) {
 				homePage.numberOfTravelersDoneButton().click();
@@ -96,6 +108,7 @@ public class Flight extends TestBase {
 
 	public boolean selectClass(String flightClass) {
 		try {
+			wait.until(ExpectedConditions.visibilityOf(homePage.classSelect()));
 			if (homePage.classSelect().isDisplayed()) {
 				homePage.classSelect().click();
 				if (TestUtil.selectFromListofElements(homePage.classSelectfromList(), flightClass)) {

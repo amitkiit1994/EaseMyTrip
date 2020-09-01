@@ -85,25 +85,25 @@ public class HomePage {
 		return driver.findElement(By.xpath("//input[@id='FromSector_show']"));
 	}
 	public List<WebElement> selectFromCity() {
-		return driver.findElements(By.xpath("//li[contains(@onclick,'FromSector')]"));
+		return driver.findElements(By.xpath("//li[contains(@onclick,'FromSector')]/div/span[@class='ct']"));
 	}
 	public WebElement toLocationInputField() {
 		return driver.findElement(By.xpath("//input[@placeholder='To' and @id='Editbox13_show']"));
 	}
 	public List<WebElement> selectToCity() {
-		return driver.findElements(By.xpath("//li[contains(@onclick,'Editbox')]"));
+		return driver.findElements(By.xpath("//li[@class='ui-menu-item']/div[contains(@class,'active')]/span[@class='ct']"));
 	}
 	public WebElement departureDatePicker() {
 		return driver.findElement(By.xpath("//input[@id='ddate']"));
 	}
-	public List<WebElement> monthList(){
-		return driver.findElements(By.xpath("//div[contains(@class,'month') and contains(text(),'2020')]"));
+	public WebElement monthList(){
+		return driver.findElement(By.xpath("(//div[contains(@class,'month') and contains(text(),'2020')])[1]"));
 	}
 	public WebElement monthSelectRightArrow() {
 		return driver.findElement(By.xpath("//img[@alt='Arrow' and contains(@onclick,'nxt')]"));
 	}
 	public List<WebElement> dateList(){
-		return driver.findElements(By.xpath("//li[contains(@id,'/2020') and not(contains(@class,'old-dt'))]"));
+		return driver.findElements(By.xpath("//div[@class='box']/div[@class='days']/ul/li[contains(@id,'/2020') and not(contains(@class,'old-dt'))]"));
 	}	
 	public WebElement numberOfTravelersSelect() {
 		return driver.findElement(By.xpath("//div[@class='dropdown_n']/a[@onclick='myFunction4()']/span[text()='1 Traveller(s)' and@class='drpNoTrv']"));
