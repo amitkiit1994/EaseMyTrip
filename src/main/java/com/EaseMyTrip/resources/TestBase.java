@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -50,6 +49,7 @@ public class TestBase {
 	}
 
 
+	
 	public void getScreenshot(String result) throws IOException {
 	}
 }

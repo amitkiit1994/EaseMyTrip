@@ -7,13 +7,14 @@ import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
 import javax.mail.BodyPart;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -27,6 +28,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -36,15 +38,12 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-
 import com.EaseMyTrip.resources.TestBase;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 public class TestUtil extends TestBase {
-
 	public static String readOTPfromMail(final String email, final String password) throws GeneralSecurityException {
 		// TODO Auto-generated method stub
 		Properties props = new Properties();
@@ -65,8 +64,8 @@ public class TestUtil extends TestBase {
 //				return new PasswordAuthentication(email, password);
 //			}
 //		});
-		ArrayList<String> listOfOtps=new ArrayList<String>();
-		String recentOtp="";
+		ArrayList<String> listOfOtps = new ArrayList<String>();
+		String recentOtp = "";
 		try {
 			Object messageContent = new ArrayList<String>();
 			IMAPStore store = (IMAPStore) session.getStore("imap");
@@ -75,38 +74,37 @@ public class TestUtil extends TestBase {
 			Folder inbox = store.getFolder("INBOX");
 			Thread.sleep(30000);
 			inbox.open(Folder.READ_ONLY);
-			Message[] messages=inbox.getMessages();
+			Message[] messages = inbox.getMessages();
 			for (int i = 0, n = messages.length; i < n; i++) {
 				Message message = messages[i];
-				if (message.getFrom()[0].toString().contains("EaseMyTrip")) {		
-					messageContent = message.getContent();			
+				if (message.getFrom()[0].toString().contains("EaseMyTrip")) {
+					messageContent = message.getContent();
 //					System.out.println("---------------------------------");
 //					System.out.println("Email Number " + (i + 1));
 //					System.out.println("Subject: " + message.getSubject());
 //					System.out.println("From: " + message.getFrom()[0]);
 //					System.out.println("Text: " + messageContent.toString());
 					// close the store and folder objects
-					Scanner sc = new Scanner(messageContent.toString()); 
-					String otp="";
-			        String line = null;
-			        while (sc.hasNextLine()) {
-			            line = sc.nextLine().trim();
-			            if(line.contains("height=\"60\"")) {
-			            	otp=line.substring(171, 177);
-			            	listOfOtps.add(otp);
-			            }
-			        }			        
-			        sc.close();					
+					Scanner sc = new Scanner(messageContent.toString());
+					String otp = "";
+					String line = null;
+					while (sc.hasNextLine()) {
+						line = sc.nextLine().trim();
+						if (line.contains("height=\"60\"")) {
+							otp = line.substring(171, 177);
+							listOfOtps.add(otp);
+						}
+					}
+					sc.close();
 				}
 			}
 			inbox.close(false);
 			store.close();
 //			System.out.println("List of OTPs retrived: "+listOfOtps);
-			if(listOfOtps.size()>1) {
-			recentOtp=listOfOtps.get(listOfOtps.size()-1);
-			}
-			else {
-				recentOtp=listOfOtps.get(0);
+			if (listOfOtps.size() > 1) {
+				recentOtp = listOfOtps.get(listOfOtps.size() - 1);
+			} else {
+				recentOtp = listOfOtps.get(0);
 			}
 			return recentOtp;
 		} catch (NoSuchProviderException e) {
@@ -116,11 +114,8 @@ public class TestUtil extends TestBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return recentOtp;	
+		return recentOtp;
 	}
-	
-	
-		
 
 	public static void sendMail(final String email, final String password, final String toEmail) throws IOException {
 		Properties props = new Properties();
@@ -187,10 +182,10 @@ public class TestUtil extends TestBase {
 		}
 
 	}
-	
+
 	public static String convertMonthnumbertoName(int monthNumberInt) {
-		String monthNumber=String.valueOf(monthNumberInt);
-		if (monthNumber .equals("1")) {
+		String monthNumber = String.valueOf(monthNumberInt);
+		if (monthNumber.equals("1")) {
 			return "JAN";
 		} else if (monthNumber.equals("2")) {
 			return "FEB";
@@ -217,38 +212,54 @@ public class TestUtil extends TestBase {
 		}
 		return "Invalid Input";
 	}
-	
-	public static boolean selectFromListofElements(List<WebElement> listOfValues, String selection){
+
+	public static boolean selectFromListofElements(List<WebElement> listOfValues, String selection) {
 		try {
 			for (WebElement value : listOfValues) {
-				if(value.getText().contains(selection)) {
+				if (value.getText().contains(selection)) {
 					value.click();
 					return true;
 				}
 			}
 			return false;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			return false;
 		}
 	}
-	
-	public static void dateSelector(WebElement monthNavigation, WebElement monthSelect, List<WebElement> dates, Date date) throws InterruptedException {
+
+	public static void dateSelector(WebElement monthNavigation, WebElement monthSelect, List<WebElement> dates,
+			Date date) throws InterruptedException {
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //		System.out.println("[DEBUG] Month Value: "+localDate.getMonthValue());
-//		System.out.println("[DEBUG] Month Name: "+convertMonthnumbertoName(localDate.getMonthValue()));
+//		System.out.println("[DEBUG] Month Name from Excel: " + convertMonthnumbertoName(localDate.getMonthValue()));
 //		System.out.println("[DEBUG] Month Name From UI: "+monthSelect.getText());
-		if (!monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
-			while (!monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
-				monthNavigation.click();
+//		if (!monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+//			Thread.sleep(2000);
+//			while (!monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+//				driver.navigate().refresh();
+//				Thread.sleep(2000);
+//				System.out.println("[DEBUG] Month Name From UI: "+monthSelect.getText());
+//				monthNavigation.click();
+//			}
+//		}
+		for (int i = 1; i <= 12; i++) {
+			if (monthSelect.getText().contains(convertMonthnumbertoName(localDate.getMonthValue()))) {
+//				System.out.println("[DEBUG] Month Name From UI: " + monthSelect.getText());
+				break;
 			}
+//			System.out.println("[DEBUG] Month Name From UI: " + monthSelect.getText());
+			monthNavigation.click();
 		}
+
 //		System.out.println("[DEBUG] Date From Excel: "+localDate.getDayOfMonth());
-		
+		SimpleDateFormat sf= new SimpleDateFormat("dd/MM/yyyy");
+//		System.out.println("[DEBUG] Date From Excel: " + sf.format(date));
 		for (int i = 0; i < dates.size(); i++) {
-//			System.out.println("[DEBUG] Date From UI: "+dates.get(i).getText());
-			if (dates.get(i).getText().contains(String.valueOf(localDate.getDayOfMonth()))) {
+//			System.out.println("[DEBUG] Date From UI: "+dates.get(i).getAttribute("id"));
+			if (dates.get(i).getAttribute("id").contains(sf.format(date))) {
 				dates.get(i).click();
 				break;
 			}
@@ -309,8 +320,8 @@ public class TestUtil extends TestBase {
 		return list;
 	}
 
-	public static Object[][] readUsersFromExcel(String filename,String SheetName) throws IOException {
-		System.out.println("File path: "+filename);
+	public static Object[][] readUsersFromExcel(String filename, String SheetName) throws IOException {
+//		System.out.println("File path: " + filename);
 		String file_location = System.getProperty("user.dir") + filename;
 		FileInputStream fileInputStream = new FileInputStream(file_location); // Excel sheet file location get mentioned
 																				// here
@@ -335,28 +346,26 @@ public class TestUtil extends TestBase {
 					XSSFCell cell = row.getCell(j);
 					if (cell == null)
 						Data[i][j] = ""; // if it get Null value it pass no data
-					else if (cell.getCellType()==CellType.STRING) {
+					else if (cell.getCellType() == CellType.STRING) {
 						String value = cell.getStringCellValue();
 						Data[i][j] = value; // This formatter get my all values as string i.e integer, float all type
 											// data value
-					}
-					else if (cell.getCellType()==CellType.NUMERIC) {
-						if(DateUtil.isCellDateFormatted(cell)) {
-							Date value=cell.getDateCellValue();
+					} else if (cell.getCellType() == CellType.NUMERIC) {
+						if (DateUtil.isCellDateFormatted(cell)) {
+							Date value = cell.getDateCellValue();
 							Data[i][j] = value;
-						}
-						else{
+						} else {
 							double value = cell.getNumericCellValue();
 							Data[i][j] = String.valueOf(value);
 						}
 						// This formatter get my all values as string i.e integer, float all type
-											// data value
+						// data value
 					}
-					 // This formatter get my all values as string i.e integer, float all type
-											// data value
-					}
+					// This formatter get my all values as string i.e integer, float all type
+					// data value
 				}
 			}
+		}
 		workbook.close();
 
 		return Data;

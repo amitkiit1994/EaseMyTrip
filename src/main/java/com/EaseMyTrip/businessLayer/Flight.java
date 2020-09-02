@@ -2,6 +2,7 @@ package com.EaseMyTrip.businessLayer;
 
 import java.util.Date;
 
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -17,6 +18,7 @@ public class Flight extends TestBase {
 	public boolean selectTripType(String tripType) {
 
 		try {
+			wait.until(ExpectedConditions.visibilityOfAllElements(homePage.tripTypeSwitch()));
 			if (TestUtil.selectFromListofElements(homePage.tripTypeSwitch(), tripType)) {
 				return true;
 			}
@@ -75,6 +77,17 @@ public class Flight extends TestBase {
 				return true;
 			}
 			return false;
+		} catch (StaleElementReferenceException e) {
+			// TODO: handle exception
+			try {
+				TestUtil.dateSelector(homePage.monthSelectRightArrow(), homePage.monthList(), homePage.dateList(),
+						date);
+				return true;
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return false;
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -84,13 +97,13 @@ public class Flight extends TestBase {
 
 	public boolean selectNumberOfAdults(String number) {
 		try {
-			
+
 			homePage.numberOfTravelersSelect().click();
-			Double actualValue=Double.parseDouble(homePage.numberOfTravelersDisplayText().getAttribute("value"));
+			Double actualValue = Double.parseDouble(homePage.numberOfTravelersDisplayText().getAttribute("value"));
 //			System.out.println("[DEBUG] Number of Travellers from Excel: " + number);
 //			System.out.println("[DEBUG] Number of Travellers from UI: "+actualValue);
-			if (actualValue!=Double.parseDouble(number)) {
-				while (actualValue!=Double.parseDouble(number)) {
+			if (actualValue != Double.parseDouble(number)) {
+				while (actualValue != Double.parseDouble(number)) {
 					homePage.numberOfTravelersAdultSelect().click();
 				}
 			}
@@ -112,6 +125,8 @@ public class Flight extends TestBase {
 			if (homePage.classSelect().isDisplayed()) {
 				homePage.classSelect().click();
 				if (TestUtil.selectFromListofElements(homePage.classSelectfromList(), flightClass)) {
+					wait.until(ExpectedConditions.visibilityOf(homePage.classSelectDoneButton()));
+					homePage.classSelectDoneButton().click();
 					return true;
 				}
 			}

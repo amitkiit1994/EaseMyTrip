@@ -6,12 +6,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Locale;
-
-import javax.swing.text.DateFormatter;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -38,9 +33,9 @@ public class FlightTest extends TestBase {
 			driver = initializeDriver();
 			logger.info("Driver is Initialized");
 		} catch (Exception e) {
-			assertTrue(false);
 			logger.error("Exception Occured while Initializing driver");
 			e.printStackTrace();
+			assertTrue(false);	
 		}
 		account = new Account();
 		if (account.openWebsite()) {
@@ -65,7 +60,7 @@ public class FlightTest extends TestBase {
 			logger.info("Arrival Date: " + format.format(arrivalDate));
 			logger.info("Number of Travellers: " + numberOfTravellers);
 			logger.info("Flight Class: " + flightClass);
-			logger.info("---------------------------------------------------------");
+			
 			if (tripType != null) {
 				if (flight.selectTripType(tripType)) {
 					logger.info("Trip Type selected");
@@ -136,7 +131,9 @@ public class FlightTest extends TestBase {
 			} else {
 				logger.error("Invalid input for Flight Class");
 				assertTrue(false);
-			}
+			}	
+			logger.info("---------------------------------------------------------");
+			driver.navigate().refresh();
 		} catch (Exception e) {
 			logger.error("Exception Occured while Searching Flight");
 			e.printStackTrace();
