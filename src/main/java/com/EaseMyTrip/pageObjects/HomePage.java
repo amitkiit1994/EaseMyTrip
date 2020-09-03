@@ -1,7 +1,6 @@
 package com.EaseMyTrip.pageObjects;
 
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -85,13 +84,13 @@ public class HomePage {
 		return driver.findElement(By.xpath("//input[@id='FromSector_show']"));
 	}
 	public List<WebElement> selectFromCity() {
-		return driver.findElements(By.xpath("//li[contains(@onclick,'FromSector')]/div/span[@class='ct']"));
+		return driver.findElements(By.xpath("(//li[@class='ui-menu-item']/div[@tabindex='-1']/span[@class='ct'])[1]"));
 	}
 	public WebElement toLocationInputField() {
 		return driver.findElement(By.xpath("//input[@placeholder='To' and @id='Editbox13_show']"));
 	}
 	public List<WebElement> selectToCity() {
-		return driver.findElements(By.xpath("//li[@class='ui-menu-item']/div[contains(@class,'active')]/span[@class='ct']"));
+		return driver.findElements(By.xpath("(//li[@class='ui-menu-item']/div[@tabindex='-1']/span[@class='ct'])[2]"));
 	}
 	public WebElement departureDatePicker() {
 		return driver.findElement(By.xpath("//input[@id='ddate']"));

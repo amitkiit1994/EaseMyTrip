@@ -38,7 +38,10 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
 import com.EaseMyTrip.resources.TestBase;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.util.MailSSLSocketFactory;
@@ -229,6 +232,37 @@ public class TestUtil extends TestBase {
 		}
 	}
 
+	public static boolean setSliderRange(WebElement displayText, WebElement maxSliderObject, WebElement minSliderObject, String maxRange,String minRange) {
+		try {
+			if(displayText.isDisplayed()) {
+				String value=displayText.getAttribute("value");
+				Actions action = new Actions(driver);
+				String[] valueRange= value.split("-");
+				String actualMaxRange=valueRange[1].strip().replaceAll("[^\\d.]", "");
+				String actualMinRange=valueRange[0].strip().replaceAll("[^\\d.]", "");
+				if(maxRange!=null) {
+					maxSliderObject.click();
+					while(actualMaxRange.equalsIgnoreCase(maxRange)){
+						action.sendKeys(Keys.ARROW_LEFT).build().perform();
+					}
+					return true;
+				}			
+				if(minRange!=null) {
+					minSliderObject.click();
+					while(actualMinRange.equalsIgnoreCase(minRange)){
+						action.sendKeys(Keys.ARROW_RIGHT).build().perform();
+					}
+					return true;
+				}				
+			}
+			
+			return false;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public static void dateSelector(WebElement monthNavigation, WebElement monthSelect, List<WebElement> dates,
 			Date date) throws InterruptedException {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

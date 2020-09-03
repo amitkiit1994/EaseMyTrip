@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: TestSuite
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.936 s - in TestSuite
+Tests run: 7, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 61.095 s <<< FAILURE! - in TestSuite
+com.EaseMyTrip.test.FlightTest.searchFlightTest[One Way, Hyderabad, Ahmedabad, Sat Feb 20 00:00:00 IST 2021, Sat Feb 20 00:00:00 IST 2021, 1.0, Economy](6)  Time elapsed: 11.573 s  <<< FAILURE!
+java.lang.AssertionError
+	at com.EaseMyTrip.test.FlightTest.searchFlightTest(FlightTest.java:89)
+
+com.EaseMyTrip.test.FlightTest.searchFlightTest[One Way, Bangalore, Hyderabad, Sat Mar 20 00:00:00 IST 2021, Sat Mar 20 00:00:00 IST 2021, 1.0, Economy](7)  Time elapsed: 1.307 s  <<< FAILURE!
+java.lang.AssertionError
+	at com.EaseMyTrip.test.FlightTest.searchFlightTest(FlightTest.java:81)
+
