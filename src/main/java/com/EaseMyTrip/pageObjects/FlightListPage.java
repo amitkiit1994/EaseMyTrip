@@ -84,6 +84,30 @@ public class FlightListPage {
 	public List<WebElement> flightResultList() {
 		return driver.findElements(By.xpath("//div[contains(@class,'fltResult')]"));
 	}
+	public List<WebElement> flightResultStopsList() {
+		return driver.findElements(By.xpath("//div[contains(@class,'fltResult')]/div/div/div/span[contains(@ng-if,'STP')]"));
+	}
+	public List<WebElement> flightResultAirlinesList() {
+		return driver.findElements(By.xpath("//div[contains(@class,'fltResult')]/div/div/div/div/div/span[contains(@ng-bind,'AC')]"));
+	}
+	public WebElement airlinesSortLink() {
+		return driver.findElement(By.xpath("//a[contains(text(),'Airlines') and contains(@ng-click,'sort')]"));
+	}
+	public WebElement departSortLink() {
+		return driver.findElement(By.xpath("//a[contains(text(),'DEPART') and contains(@ng-click,'sort')]"));
+	}
+	public WebElement durationSortLink() {
+		return driver.findElement(By.xpath("//a[contains(text(),'Duration') and contains(@ng-click,'sort')]"));
+	}
+	public WebElement arriveSortLink() {
+		return driver.findElement(By.xpath("//a[contains(text(),'ARRIVE') and contains(@ng-click,'sort')]"));
+	}
+	public WebElement priceSortLink() {
+		return driver.findElement(By.xpath("//a[contains(text(),'Price') and contains(@ng-click,'sort')]"));
+	}
+	
+	
+	
 	
 	
 }

@@ -1,7 +1,16 @@
 package com.EaseMyTrip.businessLayer;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -11,6 +20,7 @@ import com.EaseMyTrip.resources.TestBase;
 import com.EaseMyTrip.util.TestUtil;
 
 public class Flight extends TestBase {
+	private static final Logger logger = LogManager.getLogger(Flight.class);
 	HomePage homePage = new HomePage(driver);
 	FlightListPage flightListPage = new FlightListPage(driver);
 	String url = prop.getProperty("URL");
@@ -179,6 +189,103 @@ public class Flight extends TestBase {
 		}
 	}
 
+	public boolean searchFlight(String tripType, String departureCity, String arrivalCity, Date departureDate,
+			Date arrivalDate, String numberOfTravellers, String flightClass) {
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if (tripType != null) {
+				if (selectTripType(tripType)) {
+					logger.info("Trip Type selected");
+				} else {
+					logger.error("Trip type selection failed due to invalid inputs or click exception");
+					return false;
+				}
+			} else {
+				logger.error("Null input");
+				return false;
+			}
+			if (!departureCity.equalsIgnoreCase(arrivalCity)) {
+				if (departureCity != null) {
+					if (selectDepartureCity(departureCity)) {
+						logger.info("Departure City selected");
+					} else {
+						logger.error("Departure City selection failed");
+						return false;
+					}
+				}
+				if (arrivalCity != null) {
+					if (selectArrivalCity(arrivalCity)) {
+						logger.info("Arrival city selected");
+					} else {
+						logger.error("Arrival city selection failed");
+						return false;
+					}
+				}
+			} else {
+				logger.error("Departure city and Arrival city are same, Please give valid inputs");
+				return false;
+			}
+			Date dateobj = new Date();
+			if (departureDate.after(dateobj)) {
+				if (departureDate != null) {
+					if (selectDepartureDate(departureDate)) {
+						logger.info("Departure date selected");
+					} else {
+						logger.error("Departure date selection failed");
+						return false;
+					}
+				}
+			} else {
+				logger.error("Departure date: " + format.format(departureDate) + " is less than current date: "
+						+ format.format(dateobj));
+				return false;
+			}
+
+			if (Double.parseDouble(numberOfTravellers) > 0) {
+				if (selectNumberOfAdults(numberOfTravellers)) {
+					logger.info("Number of travellers selected");
+				} else {
+					logger.error("Number of travellers selection failed");
+					return false;
+				}
+			} else {
+				logger.error("Invalid input for number of Travellers, cannot be less than or equal to 0");
+				return false;
+			}
+			if (flightClass != null) {
+				if (selectClass(flightClass)) {
+					logger.info("Flight Class selected");
+				} else {
+					logger.error("Flight Class selection failed");
+					return false;
+				}
+			} else {
+				logger.error("Invalid input for Flight Class");
+				return false;
+			}
+
+			if (submitSelection()) {
+				logger.info("Flight Details submitted for search criteria");
+			} else {
+				logger.error("Flight Details submission failed");
+				return false;
+			}
+
+			if (verifySearchResults(departureCity, arrivalCity, format.format(departureDate), numberOfTravellers,
+					flightClass)) {
+				logger.info("Flight Submissions Details verified successfully");
+			} else {
+				logger.error("Flight Submissions verification failed");
+				return false;
+			}
+			return false;
+		} catch (Exception e) {
+			logger.error("Exception Occured while Searching Flight");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public static String price = "";
 
 	public boolean setPriceRange(String maxPrice, String minPrice) {
@@ -193,14 +300,26 @@ public class Flight extends TestBase {
 				}
 				if (TestUtil.setSliderRange(flightListPage.priceDisplayText(), flightListPage.priceSliderMax(),
 						flightListPage.priceSliderMin(), maxPrice, minPrice)) {
-					return true;
+					if (flightListPage.flightResultList().size() != 0) {
+						for (WebElement price : flightListPage.flightResultList()) {
+							if ((Integer.parseInt(minPrice)) <= (Integer.parseInt(price.getAttribute("price")))
+									&& (Integer.parseInt(maxPrice)) <= (Integer
+											.parseInt(price.getAttribute("price")))) {
+								continue;
+							} else {
+								return false;
+							}
+						}
+					} else {
+						logger.info("No Flights found with given filter for Price Range");
+					}
 				}
 			} else if (flightListPage.oopsMessageText().isDisplayed()) {
 				wait.until(ExpectedConditions.invisibilityOf(flightListPage.searchLoader()));
 				return false;
 			}
 
-			return false;
+			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -221,13 +340,25 @@ public class Flight extends TestBase {
 				}
 				if (TestUtil.setSliderRange(flightListPage.hourDisplayText(), flightListPage.hourSliderMax(),
 						flightListPage.hourSliderMin(), maxHour, minHour)) {
-					return true;
+					if (flightListPage.flightResultList().size() != 0) {
+						for (WebElement hour : flightListPage.flightResultList()) {
+							String deptm = hour.getAttribute("deptm").replace(":", ".");
+							if ((Double.parseDouble(minHour)) <= (Double.parseDouble(deptm))
+									&& (Double.parseDouble(maxHour)) <= (Double.parseDouble(deptm))) {
+								continue;
+							} else {
+								return false;
+							}
+						}
+					} else {
+						logger.info("No Flights found with given filter for Departure Time Range");
+					}
 				}
 			} else if (flightListPage.oopsMessageText().isDisplayed()) {
 				wait.until(ExpectedConditions.invisibilityOf(flightListPage.searchLoader()));
 				return false;
 			}
-			return false;
+			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -249,13 +380,26 @@ public class Flight extends TestBase {
 				if (TestUtil.setSliderRange(flightListPage.arrivalHourDisplayText(),
 						flightListPage.arrivalHourSliderMax(), flightListPage.arrivalHourSliderMin(), maxHour,
 						minHour)) {
-					return true;
+					if (flightListPage.flightResultList().size() != 0) {
+						for (WebElement hour : flightListPage.flightResultList()) {
+
+							String arrtm = hour.getAttribute("arrtm").replace(":", ".");
+							if ((Double.parseDouble(minHour)) <= (Double.parseDouble(arrtm))
+									&& (Double.parseDouble(maxHour)) <= (Double.parseDouble(arrtm))) {
+								continue;
+							} else {
+								return false;
+							}
+						}
+					} else {
+						logger.info("No Flights found with given filter for Arrival Time Range");
+					}
 				}
 			} else if (flightListPage.oopsMessageText().isDisplayed()) {
 				wait.until(ExpectedConditions.invisibilityOf(flightListPage.searchLoader()));
 				return false;
 			}
-			return false;
+			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -266,9 +410,19 @@ public class Flight extends TestBase {
 	public boolean setStops(String stop) {
 		try {
 			if (TestUtil.selectFromListofElements(flightListPage.stopsList(), stop)) {
-				return true;
+				if (flightListPage.flightResultStopsList().size() != 0) {
+					for (WebElement stops : flightListPage.flightResultStopsList()) {
+						if (stops.getText().replace("-", "").contains(stop)) {
+							continue;
+						} else {
+							return false;
+						}
+					}
+				} else {
+					logger.info("No Flights found with given filter for Stops");
+				}
 			}
-			return false;
+			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -281,7 +435,17 @@ public class Flight extends TestBase {
 			for (int i = 0; i < flightListPage.airlinesCheckboxList().size(); i++) {
 				if (flightListPage.airlinesNameList().get(i).getText().equalsIgnoreCase(airline)) {
 					flightListPage.airlinesCheckboxList().get(i).click();
-					return true;
+					if (flightListPage.flightResultAirlinesList().size() != 0) {
+						for (WebElement airlines : flightListPage.flightResultAirlinesList()) {
+							if (airlines.getText().contains(airline)) {
+								continue;
+							} else {
+								return false;
+							}
+						}
+					} else {
+						logger.info("No Flights found with given filter for Airlines");
+					}
 				}
 			}
 			return false;

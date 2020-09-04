@@ -2,8 +2,7 @@ package com.EaseMyTrip.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,13 +11,10 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
 import com.EaseMyTrip.businessLayer.Account;
 import com.EaseMyTrip.businessLayer.Flight;
 import com.EaseMyTrip.resources.TestBase;
-import com.EaseMyTrip.util.TestUtil;
 
 public class FlightTest extends TestBase {
 	private static final Logger logger = LogManager.getLogger(FlightTest.class);
@@ -46,7 +42,7 @@ public class FlightTest extends TestBase {
 		}
 	}
 
-	@Test(dataProvider = "readFlightSearchInfoExcel")
+	@Test(dataProvider = "readFlightSearchInfoExcel", dataProviderClass = DataProvider.class)
 	public void searchFlightTest(String tripType, String departureCity, String arrivalCity, Date departureDate,
 			Date arrivalDate, String numberOfTravellers, String flightClass) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -60,91 +56,8 @@ public class FlightTest extends TestBase {
 			logger.info("Arrival Date: " + format.format(arrivalDate));
 			logger.info("Number of Travellers: " + numberOfTravellers);
 			logger.info("Flight Class: " + flightClass);
-
-			if (tripType != null) {
-				if (flight.selectTripType(tripType)) {
-					logger.info("Trip Type selected");
-				} else {
-					logger.error("Trip type selection failed due to invalid inputs or click exception");
-					assertTrue(false);
-				}
-			} else {
-				logger.error("Null input");
-				assertTrue(false);
-			}
-			if (!departureCity.equalsIgnoreCase(arrivalCity)) {
-				if (departureCity != null) {
-					if (flight.selectDepartureCity(departureCity)) {
-						logger.info("Departure City selected");
-					} else {
-						logger.error("Departure City selection failed");
-						assertTrue(false);
-					}
-				}
-				if (arrivalCity != null) {
-					if (flight.selectArrivalCity(arrivalCity)) {
-						logger.info("Arrival city selected");
-					} else {
-						logger.error("Arrival city selection failed");
-						assertTrue(false);
-					}
-				}
-			} else {
-				logger.error("Departure city and Arrival city are same, Please give valid inputs");
-				assertTrue(false);
-			}
-			Date dateobj = new Date();
-			if (departureDate.after(dateobj)) {
-				if (departureDate != null) {
-					if (flight.selectDepartureDate(departureDate)) {
-						logger.info("Departure date selected");
-					} else {
-						logger.error("Departure date selection failed");
-						assertTrue(false);
-					}
-				}
-			} else {
-				logger.error("Departure date: " + format.format(departureDate) + " is less than current date: "
-						+ format.format(dateobj));
-				assertTrue(false);
-			}
-
-			if (Double.parseDouble(numberOfTravellers) > 0) {
-				if (flight.selectNumberOfAdults(numberOfTravellers)) {
-					logger.info("Number of travellers selected");
-				} else {
-					logger.error("Number of travellers selection failed");
-					assertTrue(false);
-				}
-			} else {
-				logger.error("Invalid input for number of Travellers, cannot be less than or equal to 0");
-				assertTrue(false);
-			}
-			if (flightClass != null) {
-				if (flight.selectClass(flightClass)) {
-					logger.info("Flight Class selected");
-				} else {
-					logger.error("Flight Class selection failed");
-					assertTrue(false);
-				}
-			} else {
-				logger.error("Invalid input for Flight Class");
-				assertTrue(false);
-			}
-
-			if (flight.submitSelection()) {
-				logger.info("Flight Details submitted for search criteria");
-			} else {
-				logger.error("Flight Details submission failed");
-				assertTrue(false);
-			}
-
-			if (flight.verifySearchResults(departureCity, arrivalCity, format.format(departureDate), numberOfTravellers,
-					flightClass)) {
-				logger.info("Flight Submissions Details verified successfully");
-			} else {
-				logger.error("Flight Submissions verification failed");
-				assertTrue(false);
+			if (flight.searchFlight(tripType, departureCity, arrivalCity, departureDate, arrivalDate, numberOfTravellers, flightClass)) {
+				logger.info("Flight Search test case executed successfully");
 			}
 			logger.info("---------------------------------------------------------");
 			driver.navigate().refresh();
@@ -155,18 +68,7 @@ public class FlightTest extends TestBase {
 		}
 	}
 
-	@DataProvider
-	public static Object[][] readFlightSearchInfoExcel() {
-		Object[][] data = null;
-		try {
-			data = TestUtil.readUsersFromExcel(prop.getProperty("FLIGHT_SEARCH_INFO"), "Sheet1");
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error("Exception occured in Data Provider for Flight search info list");
-		}
-		return data;
-
-	}
+	
 
 	@AfterTest
 	public void closeBrowser() {
