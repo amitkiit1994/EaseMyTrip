@@ -2,6 +2,8 @@ package com.EaseMyTrip.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
@@ -11,8 +13,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.mail.BodyPart;
@@ -42,6 +47,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import com.EaseMyTrip.pageObjects.FlightListPage;
 import com.EaseMyTrip.resources.TestBase;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.util.MailSSLSocketFactory;
@@ -232,37 +238,62 @@ public class TestUtil extends TestBase {
 		}
 	}
 
-	public static boolean setSliderRange(WebElement displayText, WebElement maxSliderObject, WebElement minSliderObject, String maxRange,String minRange) {
+	public static boolean setSliderRange(WebElement displayText, WebElement maxSliderObject, WebElement minSliderObject,
+			String maxRange, String minRange) {
 		try {
-			if(displayText.isDisplayed()) {
-				String value=displayText.getAttribute("value");
+			if (displayText.isDisplayed()) {
+				String value = displayText.getAttribute("value");
 				Actions action = new Actions(driver);
-				String[] valueRange= value.split("-");
-				String actualMaxRange=valueRange[1].strip().replaceAll("[^\\d.]", "");
-				String actualMinRange=valueRange[0].strip().replaceAll("[^\\d.]", "");
-				if(maxRange!=null) {
+				String[] valueRange = value.split("-");
+				String actualMaxRange = valueRange[1].strip().replaceAll("[^\\d.]", "");
+				String actualMinRange = valueRange[0].strip().replaceAll("[^\\d.]", "");
+				if (maxRange != null) {
 					maxSliderObject.click();
-					while(actualMaxRange.equalsIgnoreCase(maxRange)){
+					while (actualMaxRange.equalsIgnoreCase(maxRange)) {
 						action.sendKeys(Keys.ARROW_LEFT).build().perform();
 					}
 					return true;
-				}			
-				if(minRange!=null) {
+				}
+				if (minRange != null) {
 					minSliderObject.click();
-					while(actualMinRange.equalsIgnoreCase(minRange)){
+					while (actualMinRange.equalsIgnoreCase(minRange)) {
 						action.sendKeys(Keys.ARROW_RIGHT).build().perform();
 					}
 					return true;
-				}				
+				}
 			}
-			
+
 			return false;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			return false;
 		}
 	}
+
+	public static boolean sort(WebElement itemToSort, String sortingOrder) {
+		try {
+			FlightListPage flightListPage = new FlightListPage(driver);
+			if (sortingOrder.toLowerCase().contains("asc")) {
+				while (flightListPage.sortArrow().getAttribute("class").contains("up")) {
+					flightListPage.priceSortLink().click();
+				}
+				return true;
+			}
+			if (sortingOrder.toLowerCase().contains("desc")) {
+				while (flightListPage.sortArrow().getAttribute("class").contains("down")) {
+					flightListPage.priceSortLink().click();
+				}
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public static void dateSelector(WebElement monthNavigation, WebElement monthSelect, List<WebElement> dates,
 			Date date) throws InterruptedException {
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -289,7 +320,7 @@ public class TestUtil extends TestBase {
 		}
 
 //		System.out.println("[DEBUG] Date From Excel: "+localDate.getDayOfMonth());
-		SimpleDateFormat sf= new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 //		System.out.println("[DEBUG] Date From Excel: " + sf.format(date));
 		for (int i = 0; i < dates.size(); i++) {
 //			System.out.println("[DEBUG] Date From UI: "+dates.get(i).getAttribute("id"));
@@ -403,5 +434,47 @@ public class TestUtil extends TestBase {
 		workbook.close();
 
 		return Data;
+	}
+
+	public static void writeFlightDataToExcel(String filename, List<String> airlines, List<String> depTm,
+			List<String> arrTm, List<String> duration, List<String> price) throws IOException {
+		String file_location = System.getProperty("user.dir") + filename;
+		// Create blank workbook
+		XSSFWorkbook workbook = new XSSFWorkbook();
+
+		// Create a blank sheet
+		XSSFSheet spreadsheet = workbook.createSheet("Flight Results");
+
+		// Create row object
+		XSSFRow row;
+		// This data needs to be written (Object[])
+		Map<String, Object[]> fltinfo = new TreeMap<String, Object[]>();
+		fltinfo.put("1", new Object[] { "AIRLINES", "DEPARTURE TIME", "ARRIVAL TIME", "DURATION", "PRICE" });
+		int c = 2;
+		for (int i = 0; i < airlines.size(); i++) {
+			fltinfo.put(String.valueOf(c),
+					new Object[] { airlines.get(i), depTm.get(i), arrTm.get(i), duration.get(i), price.get(i) });
+			c = c + 1;
+		}
+
+		// Iterate over data and write to sheet
+		Set<String> keyid = fltinfo.keySet();
+		int rowid = 0;
+
+		for (String key : keyid) {
+			row = spreadsheet.createRow(rowid++);
+			Object[] objectArr = fltinfo.get(key);
+			int cellid = 0;
+
+			for (Object obj : objectArr) {
+				Cell cell = row.createCell(cellid++);
+				cell.setCellValue((String) obj);
+			}
+		}
+		// Write the workbook in file system
+		FileOutputStream out = new FileOutputStream(new File(file_location));
+		workbook.write(out);
+		out.close();
+		workbook.close();
 	}
 }

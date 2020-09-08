@@ -87,6 +87,9 @@ public class FlightListPage {
 	public List<WebElement> flightResultStopsList() {
 		return driver.findElements(By.xpath("//div[contains(@class,'fltResult')]/div/div/div/span[contains(@ng-if,'STP')]"));
 	}
+	public List<WebElement> flightResultDurationList() {
+		return driver.findElements(By.xpath("//div[contains(@class,'fltResult')]/div/div/div/span[contains(@ng-bind,'Tm')]"));
+	}	
 	public List<WebElement> flightResultAirlinesList() {
 		return driver.findElements(By.xpath("//div[contains(@class,'fltResult')]/div/div/div/div/div/span[contains(@ng-bind,'AC')]"));
 	}
@@ -104,6 +107,9 @@ public class FlightListPage {
 	}
 	public WebElement priceSortLink() {
 		return driver.findElement(By.xpath("//a[contains(text(),'Price') and contains(@ng-click,'sort')]"));
+	}
+	public WebElement sortArrow() {
+		return driver.findElement(By.xpath("//i[contains(@class,'arrow')]"));
 	}
 	
 	

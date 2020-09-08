@@ -1,14 +1,14 @@
 package com.EaseMyTrip.businessLayer;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -278,7 +278,7 @@ public class Flight extends TestBase {
 				logger.error("Flight Submissions verification failed");
 				return false;
 			}
-			return false;
+			return true;
 		} catch (Exception e) {
 			logger.error("Exception Occured while Searching Flight");
 			e.printStackTrace();
@@ -311,7 +311,7 @@ public class Flight extends TestBase {
 							}
 						}
 					} else {
-						logger.info("No Flights found with given filter for Price Range");
+						logger.error("No Flights found with given filter for Price Range");
 					}
 				}
 			} else if (flightListPage.oopsMessageText().isDisplayed()) {
@@ -351,7 +351,7 @@ public class Flight extends TestBase {
 							}
 						}
 					} else {
-						logger.info("No Flights found with given filter for Departure Time Range");
+						logger.error("No Flights found with given filter for Departure Time Range");
 					}
 				}
 			} else if (flightListPage.oopsMessageText().isDisplayed()) {
@@ -392,7 +392,7 @@ public class Flight extends TestBase {
 							}
 						}
 					} else {
-						logger.info("No Flights found with given filter for Arrival Time Range");
+						logger.error("No Flights found with given filter for Arrival Time Range");
 					}
 				}
 			} else if (flightListPage.oopsMessageText().isDisplayed()) {
@@ -419,7 +419,7 @@ public class Flight extends TestBase {
 						}
 					}
 				} else {
-					logger.info("No Flights found with given filter for Stops");
+					logger.error("No Flights found with given filter for Stops");
 				}
 			}
 			return true;
@@ -444,7 +444,7 @@ public class Flight extends TestBase {
 							}
 						}
 					} else {
-						logger.info("No Flights found with given filter for Airlines");
+						logger.error("No Flights found with given filter for Airlines");
 					}
 				}
 			}
@@ -456,8 +456,71 @@ public class Flight extends TestBase {
 		}
 	}
 
+	public boolean setFilter(String maxPrice, String minPrice, String maxDTime, String minDTime, String maxATime,
+			String minATime, String stops, String airlines) {
+		try {
+			if (setPriceRange(maxPrice, minPrice)) {
+				logger.info("Price range set successfully");
+			} else {
+				logger.error("Price range settings failed");
+				return false;
+			}
+			if (setDepartureTimeRange(maxDTime, minDTime)) {
+				logger.info("Departure time range set successfully");
+			} else {
+				logger.error("Departure time range range settings failed");
+				return false;
+			}
+			if (setArrivalTimeRange(maxATime, minATime)) {
+				logger.info("Arrival time range set successfully");
+			} else {
+				logger.error("Arrival time range range settings failed");
+				return false;
+			}
+			if (setStops(stops)) {
+				logger.info("Number of stops selected successfully");
+			} else {
+				logger.error("Stops selection failed");
+				return false;
+			}
+			if (setAirline(airlines)) {
+				logger.info("Airlines selected successfully");
+			} else {
+				logger.error("Airlines selection failed");
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public boolean getPriceSortedFlightDetails(String sortingOrder) {
 		try {
+			ArrayList<String> listOfPrices = new ArrayList<String>();
+			if (TestUtil.sort(flightListPage.priceSortLink(), sortingOrder)) {
+				for (int i = 0; i < flightListPage.flightResultList().size(); i++) {
+					listOfPrices.add(flightListPage.flightResultList().get(i).getAttribute("price"));
+				}
+				Collections.sort(listOfPrices);
+				if (sortingOrder.toLowerCase().contains("asc")) {
+					if (listOfPrices.get(0)
+							.equalsIgnoreCase(flightListPage.flightResultList().get(0).getAttribute("price"))) {
+						return true;
+					}
+				}
+				if (sortingOrder.toLowerCase().contains("desc")) {
+					if (listOfPrices.get(listOfPrices.size() - 1).equalsIgnoreCase(
+							flightListPage.flightResultList().get(listOfPrices.size() - 1).getAttribute("price"))) {
+						return true;
+					}
+				}
+				return false;
+			} else {
+				logger.error("Sorting with Price failed for " + sortingOrder);
+			}
 
 			return false;
 		} catch (Exception e) {
@@ -469,6 +532,28 @@ public class Flight extends TestBase {
 
 	public boolean getArrivalTimeSortedFlightDetails(String sortingOrder) {
 		try {
+			ArrayList<String> listOfTime = new ArrayList<String>();
+			if (TestUtil.sort(flightListPage.arriveSortLink(), sortingOrder)) {
+				for (int i = 0; i < flightListPage.flightResultList().size(); i++) {
+					listOfTime.add(flightListPage.flightResultList().get(i).getAttribute("arrtm"));
+				}
+				Collections.sort(listOfTime);
+				if (sortingOrder.toLowerCase().contains("asc")) {
+					if (listOfTime.get(0)
+							.equalsIgnoreCase(flightListPage.flightResultList().get(0).getAttribute("price"))) {
+						return true;
+					}
+				}
+				if (sortingOrder.toLowerCase().contains("desc")) {
+					if (listOfTime.get(listOfTime.size() - 1).equalsIgnoreCase(
+							flightListPage.flightResultList().get(listOfTime.size() - 1).getAttribute("price"))) {
+						return true;
+					}
+				}
+				return false;
+			} else {
+				logger.error("Sorting with Arrival Time failed for " + sortingOrder);
+			}
 
 			return false;
 		} catch (Exception e) {
@@ -480,6 +565,28 @@ public class Flight extends TestBase {
 
 	public boolean getDepartureTimeSortedFlightDetails(String sortingOrder) {
 		try {
+			ArrayList<String> listOfTime = new ArrayList<String>();
+			if (TestUtil.sort(flightListPage.departSortLink(), sortingOrder)) {
+				for (int i = 0; i < flightListPage.flightResultList().size(); i++) {
+					listOfTime.add(flightListPage.flightResultList().get(i).getAttribute("deptm"));
+				}
+				Collections.sort(listOfTime);
+				if (sortingOrder.toLowerCase().contains("asc")) {
+					if (listOfTime.get(0)
+							.equalsIgnoreCase(flightListPage.flightResultList().get(0).getAttribute("price"))) {
+						return true;
+					}
+				}
+				if (sortingOrder.toLowerCase().contains("desc")) {
+					if (listOfTime.get(listOfTime.size() - 1).equalsIgnoreCase(
+							flightListPage.flightResultList().get(listOfTime.size() - 1).getAttribute("price"))) {
+						return true;
+					}
+				}
+				return false;
+			} else {
+				logger.error("Sorting with departure time failed for " + sortingOrder);
+			}
 
 			return false;
 		} catch (Exception e) {
@@ -491,6 +598,12 @@ public class Flight extends TestBase {
 
 	public boolean getDurationSortedFlightDetails(String sortingOrder) {
 		try {
+//			ArrayList<String> listOfTime = new ArrayList<String>();
+			if (TestUtil.sort(flightListPage.durationSortLink(), sortingOrder)) {
+				return true;
+			} else {
+				logger.error("Sorting with duration failed for " + sortingOrder);
+			}
 
 			return false;
 		} catch (Exception e) {
@@ -502,10 +615,91 @@ public class Flight extends TestBase {
 
 	public boolean getAirlinesSortedFlightDetails(String sortingOrder) {
 		try {
+			ArrayList<String> listOfTime = new ArrayList<String>();
+			if (TestUtil.sort(flightListPage.airlinesSortLink(), sortingOrder)) {
+				for (int i = 0; i < flightListPage.flightResultAirlinesList().size(); i++) {
+					listOfTime.add(flightListPage.flightResultAirlinesList().get(i).getText());
+				}
+				Collections.sort(listOfTime);
+				if (sortingOrder.toLowerCase().contains("asc")) {
+					if (listOfTime.get(0)
+							.equalsIgnoreCase(flightListPage.flightResultAirlinesList().get(0).getText())) {
+						return true;
+					}
+				}
+				if (sortingOrder.toLowerCase().contains("desc")) {
+					if (listOfTime.get(listOfTime.size() - 1).equalsIgnoreCase(
+							flightListPage.flightResultAirlinesList().get(listOfTime.size() - 1).getText())) {
+						return true;
+					}
+				}
+				return false;
+			} else {
+				logger.error("Sorting with Airlines failed for " + sortingOrder);
+			}
 
 			return false;
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean sortFlightResults(String priceOrder, String arrivalTmOrder, String depTmOrder, String durationOrder,
+			String airlinesOrder) {
+		try {
+			if (getPriceSortedFlightDetails(priceOrder)) {
+				logger.info("Flight results sorted successfully with price in " + priceOrder);
+			} else {
+				return false;
+			}
+			if (getArrivalTimeSortedFlightDetails(arrivalTmOrder)) {
+				logger.info("Flight results sorted successfully with arrival time in " + arrivalTmOrder);
+			} else {
+				return false;
+			}
+			if (getDepartureTimeSortedFlightDetails(depTmOrder)) {
+				logger.info("Flight results sorted successfully with departure time in " + depTmOrder);
+			} else {
+				return false;
+			}
+			if (getDurationSortedFlightDetails(durationOrder)) {
+				logger.info("Flight results sorted successfully with duration in " + durationOrder);
+			} else {
+				return false;
+			}
+			if (getAirlinesSortedFlightDetails(airlinesOrder)) {
+				logger.info("Flight results sorted successfully with airlines in " + airlinesOrder);
+			} else {
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean getFilghtResultsList(String filename) {
+		List<String> airlines = new ArrayList<String>();
+		List<String> deptm = new ArrayList<String>();
+		List<String> arrtm = new ArrayList<String>();
+		List<String> dur = new ArrayList<String>();
+		List<String> price = new ArrayList<String>();
+		for(int i=0;i<flightListPage.flightResultList().size();i++) {
+			price.add(flightListPage.flightResultList().get(i).getAttribute("price"));
+			deptm.add(flightListPage.flightResultList().get(i).getAttribute("deptm"));
+			arrtm.add(flightListPage.flightResultList().get(i).getAttribute("arrtm"));
+			airlines.add(flightListPage.flightResultAirlinesList().get(i).getText());
+			dur.add(flightListPage.flightResultDurationList().get(i).getText());
+		}
+		try {
+			TestUtil.writeFlightDataToExcel(filename, airlines, deptm, arrtm, dur, price);
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		}
